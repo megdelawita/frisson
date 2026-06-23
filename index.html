@@ -3,7 +3,6 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
   <title>frisson</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -23,35 +22,26 @@
       justify-content: center;
       align-items: center;
       padding: 24px;
-      overflow: hidden;
-
       background:
         radial-gradient(circle at 20% 20%, rgba(255,255,255,0.05), transparent 30%),
         radial-gradient(circle at 80% 30%, rgba(255,255,255,0.04), transparent 25%),
         radial-gradient(circle at top, #432033, #120810 72%);
-
       color: #fff8fb;
       font-family: 'Inter', sans-serif;
     }
 
     .card {
       width: 100%;
-      max-width: 680px;
-
-      padding: 56px 42px;
-
+      max-width: 700px;
+      padding: 54px 38px;
       text-align: center;
-
       background: rgba(255,255,255,0.07);
       backdrop-filter: blur(14px);
-
       border: 1px solid rgba(255,255,255,0.12);
       border-radius: 32px;
-
       box-shadow:
         0 0 60px rgba(255, 204, 230, 0.08),
         0 25px 80px rgba(0,0,0,0.45);
-
       animation: fadeUp 1.2s ease;
     }
 
@@ -64,17 +54,15 @@
     }
 
     .subtitle {
-      font-family: 'Inter', sans-serif;
       font-style: italic;
       opacity: 0.75;
-      margin-bottom: 36px;
+      margin-bottom: 34px;
       font-size: 0.95rem;
     }
 
     .definition {
-      max-width: 540px;
+      max-width: 560px;
       margin: 0 auto;
-
       font-size: 1.08rem;
       line-height: 2;
       font-weight: 300;
@@ -86,39 +74,58 @@
 
     .mamdada {
       font-style: italic;
-      opacity: 0.95;
     }
 
     .divider {
       width: 80px;
       height: 1px;
       background: rgba(255,255,255,0.25);
-      margin: 36px auto;
+      margin: 34px auto;
+    }
+
+    .note {
+      min-height: 170px;
+      max-width: 570px;
+      margin: 0 auto 34px;
+      font-size: 0.95rem;
+      line-height: 1.9;
+      opacity: 0.86;
+      font-weight: 300;
+      white-space: pre-line;
+    }
+
+    .note::after {
+      content: "|";
+      animation: blink 1s infinite;
+      opacity: 0.75;
+    }
+
+    .note.done::after {
+      content: "";
     }
 
     .playlist-button {
       display: inline-block;
-
       padding: 14px 38px;
-
       border-radius: 999px;
-
       text-decoration: none;
-
       background: #fff8fb;
       color: #341828;
-
-      font-family: 'Inter', sans-serif;
       font-size: 0.95rem;
       letter-spacing: 2px;
       text-transform: lowercase;
-
       transition: all 0.3s ease;
     }
 
     .playlist-button:hover {
       transform: translateY(-2px);
       box-shadow: 0 10px 30px rgba(255,255,255,0.15);
+    }
+
+    @keyframes blink {
+      50% {
+        opacity: 0;
+      }
     }
 
     @keyframes fadeUp {
@@ -138,30 +145,29 @@
       }
 
       .card {
-        padding: 44px 28px;
+        padding: 42px 26px;
       }
 
       .definition {
         font-size: 1rem;
-        line-height: 1.9;
+        line-height: 1.85;
+      }
+
+      .note {
+        font-size: 0.92rem;
+        min-height: 210px;
       }
     }
   </style>
 </head>
 
 <body>
-
   <div class="card">
-
     <h1>frisson</h1>
-
     <p class="subtitle">noun • French</p>
 
     <div class="definition">
-
-      <p>
-        A sudden thrill or emotional shiver.
-      </p>
+      <p>A sudden thrill or emotional shiver.</p>
 
       <p>
         Most commonly associated with music, but sometimes caused by a voice,
@@ -172,10 +178,11 @@
       <p>
         From the French <em>frisson</em>, meaning “a shiver” or “a chill.”
       </p>
-
     </div>
 
     <div class="divider"></div>
+
+    <p class="note" id="note"></p>
 
     <a
       class="playlist-button"
@@ -184,8 +191,29 @@
     >
       open
     </a>
-
   </div>
 
+  <script>
+    const noteText = `Knowing how good your music taste already is, there's a good chance you'll know most of these.
+
+I'll keep adding songs I think you'd enjoy, and songs that make me think of you.
+
+Hopefully it adds a centimeter or two to your hand demonstration of how much you miss me. 🤏🏾`;
+
+    const noteElement = document.getElementById("note");
+    let index = 0;
+
+    function typeWriter() {
+      if (index < noteText.length) {
+        noteElement.textContent += noteText[index];
+        index++;
+        setTimeout(typeWriter, 26);
+      } else {
+        noteElement.classList.add("done");
+      }
+    }
+
+    setTimeout(typeWriter, 900);
+  </script>
 </body>
 </html>
