@@ -1,19 +1,131 @@
-<section id="playlist" class="card hidden">
-  <h2>frisson</h2>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>frisson</title>
 
-  <p class="message">
-    For long calls, shared songs, and the moments in between.
-  </p>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-  <a
-    class="playlist-button"
-    href="https://music.apple.com/us/playlist/fris-son/pl.u-LdbqE13Fxm88Jv4"
-    target="_blank"
-  >
-    listen to frisson
-  </a>
+    body {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 24px;
+      font-family: Georgia, "Times New Roman", serif;
+      background: radial-gradient(circle at top, #3a1c2a, #120810 70%);
+      color: #fff8fb;
+    }
 
-  <p class="closing">
-    press play when you miss me a little.
-  </p>
-</section>
+    .card {
+      max-width: 650px;
+      width: 100%;
+      padding: 48px 36px;
+      text-align: center;
+
+      background: rgba(255,255,255,0.08);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 28px;
+
+      box-shadow: 0 20px 60px rgba(0,0,0,0.35);
+    }
+
+    h1 {
+      font-size: 4rem;
+      font-weight: 400;
+      letter-spacing: 2px;
+      margin-bottom: 12px;
+    }
+
+    .subtitle {
+      font-style: italic;
+      opacity: 0.8;
+      margin-bottom: 32px;
+    }
+
+    .definition {
+      font-size: 1.15rem;
+      line-height: 1.9;
+      max-width: 500px;
+      margin: 0 auto;
+    }
+
+    .definition p {
+      margin-bottom: 24px;
+    }
+
+    .playlist-button {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 14px 36px;
+
+      border-radius: 999px;
+      text-decoration: none;
+
+      background: #fff8fb;
+      color: #3a1c2a;
+
+      font-size: 1rem;
+      transition: all 0.3s ease;
+    }
+
+    .playlist-button:hover {
+      transform: translateY(-2px);
+    }
+
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 3rem;
+      }
+
+      .card {
+        padding: 40px 28px;
+      }
+
+      .definition {
+        font-size: 1.05rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="card">
+
+    <h1>frisson</h1>
+    <p class="subtitle">noun • French</p>
+
+    <div class="definition">
+      <p>
+        A sudden thrill or emotional shiver.
+      </p>
+
+      <p>
+        Most commonly associated with music, but sometimes caused by a voice,
+        a memory, a moment, or a person.
+      </p>
+
+      <p>
+        From the French <em>frisson</em>, meaning “a shiver” or “a chill.”
+      </p>
+    </div>
+
+    <a
+      class="playlist-button"
+      href="https://music.apple.com/us/playlist/fris-son/pl.u-LdbqE13Fxm88Jv4"
+      target="_blank"
+    >
+      open
+    </a>
+
+  </div>
+
+</body>
+</html>
