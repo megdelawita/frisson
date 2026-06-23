@@ -18,80 +18,75 @@
 
     body {
       min-height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      padding: 24px;
+      overflow: hidden;
       background:
-        radial-gradient(circle at 20% 20%, rgba(255,255,255,0.05), transparent 30%),
-        radial-gradient(circle at 80% 30%, rgba(255,255,255,0.04), transparent 25%),
-        radial-gradient(circle at top, #432033, #120810 72%);
+        radial-gradient(circle at 50% 20%, rgba(255, 210, 230, 0.08), transparent 30%),
+        radial-gradient(circle at 80% 80%, rgba(255, 255, 255, 0.035), transparent 28%),
+        linear-gradient(180deg, #1b0d16, #090407);
       color: #fff8fb;
       font-family: 'Inter', sans-serif;
     }
 
-    .card {
-      width: 100%;
-      max-width: 700px;
-      padding: 54px 38px;
+    .screen {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 32px;
       text-align: center;
-      background: rgba(255,255,255,0.07);
-      backdrop-filter: blur(14px);
-      border: 1px solid rgba(255,255,255,0.12);
-      border-radius: 32px;
-      box-shadow:
-        0 0 60px rgba(255, 204, 230, 0.08),
-        0 25px 80px rgba(0,0,0,0.45);
-      animation: fadeUp 1.2s ease;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 900ms ease;
+    }
+
+    .screen.active {
+      opacity: 1;
+      pointer-events: auto;
     }
 
     h1 {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 5rem;
-      font-weight: 500;
-      letter-spacing: 1px;
-      margin-bottom: 8px;
+      font-size: clamp(5rem, 16vw, 10rem);
+      font-weight: 400;
+      letter-spacing: 2px;
+      margin-bottom: 28px;
+    }
+
+    h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.8rem, 9vw, 5rem);
+      font-weight: 400;
+      margin-bottom: 28px;
     }
 
     .subtitle {
       font-style: italic;
-      opacity: 0.75;
-      margin-bottom: 34px;
-      font-size: 0.95rem;
+      opacity: 0.72;
+      margin-bottom: 36px;
     }
 
-    .definition {
-      max-width: 560px;
-      margin: 0 auto;
-      font-size: 1.08rem;
+    .text {
+      max-width: 620px;
+      font-size: clamp(1rem, 2.8vw, 1.15rem);
       line-height: 2;
       font-weight: 300;
     }
 
-    .definition p {
+    .text p {
       margin-bottom: 22px;
     }
 
-    .mamdada {
-      font-style: italic;
-    }
-
-    .divider {
-      width: 80px;
-      height: 1px;
-      background: rgba(255,255,255,0.25);
-      margin: 34px auto;
-    }
-
     .note {
-      min-height: 170px;
-      max-width: 570px;
-      margin: 0 auto 34px;
-      font-size: 0.95rem;
-      line-height: 1.9;
-      opacity: 0.86;
-      font-weight: 300;
+      min-height: 240px;
+      max-width: 620px;
       white-space: pre-line;
+      font-size: clamp(1rem, 2.8vw, 1.12rem);
+      line-height: 2;
+      font-weight: 300;
+      opacity: 0.9;
+      margin-bottom: 36px;
     }
 
     .note::after {
@@ -104,69 +99,76 @@
       content: "";
     }
 
-    .playlist-button {
-      display: inline-block;
-      padding: 14px 38px;
-      border-radius: 999px;
-      text-decoration: none;
-      background: #fff8fb;
-      color: #341828;
+    button,
+    a {
+      background: none;
+      border: none;
+      color: #fff8fb;
+      font-family: 'Inter', sans-serif;
       font-size: 0.95rem;
       letter-spacing: 2px;
       text-transform: lowercase;
-      transition: all 0.3s ease;
+      text-decoration: none;
+      cursor: pointer;
+      opacity: 0.82;
+      transition: opacity 300ms ease, transform 300ms ease;
     }
 
-    .playlist-button:hover {
+    button:hover,
+    a:hover {
+      opacity: 1;
       transform: translateY(-2px);
-      box-shadow: 0 10px 30px rgba(255,255,255,0.15);
+    }
+
+    .soft-button {
+      margin-top: 12px;
+      border-bottom: 1px solid rgba(255, 248, 251, 0.55);
+      padding-bottom: 6px;
+    }
+
+    .hidden-button {
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 800ms ease, transform 300ms ease;
+    }
+
+    .hidden-button.show {
+      opacity: 0.82;
+      pointer-events: auto;
+    }
+
+    .mamdada {
+      font-style: italic;
     }
 
     @keyframes blink {
-      50% {
-        opacity: 0;
-      }
-    }
-
-    @keyframes fadeUp {
-      from {
-        opacity: 0;
-        transform: translateY(18px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    @media (max-width: 600px) {
-      h1 {
-        font-size: 3.8rem;
-      }
-
-      .card {
-        padding: 42px 26px;
-      }
-
-      .definition {
-        font-size: 1rem;
-        line-height: 1.85;
-      }
-
-      .note {
-        font-size: 0.92rem;
-        min-height: 210px;
-      }
+      50% { opacity: 0; }
     }
   </style>
 </head>
 
 <body>
-  <div class="card">
+
+  <section class="screen active" id="screen1">
     <h1>frisson</h1>
+    <button class="soft-button" onclick="showScreen('screen2')">enter</button>
+  </section>
+
+  <section class="screen" id="screen2">
+    <h2>read first</h2>
+
+    <p class="note" id="note"></p>
+
+    <button class="soft-button hidden-button" id="continueBtn" onclick="showScreen('screen3')">
+      continue
+    </button>
+  </section>
+
+  <section class="screen" id="screen3">
+    <h2>frisson</h2>
     <p class="subtitle">noun • French</p>
 
-    <div class="definition">
+    <div class="text">
       <p>A sudden thrill or emotional shiver.</p>
 
       <p>
@@ -180,18 +182,14 @@
       </p>
     </div>
 
-    <div class="divider"></div>
-
-    <p class="note" id="note"></p>
-
     <a
-      class="playlist-button"
+      class="soft-button"
       href="https://music.apple.com/us/playlist/fris-son/pl.u-LdbqE13Fxm88Jv4"
       target="_blank"
     >
       open
     </a>
-  </div>
+  </section>
 
   <script>
     const noteText = `Knowing how good your music taste already is, there's a good chance you'll know most of these.
@@ -201,19 +199,35 @@ I'll keep adding songs I think you'd enjoy, and songs that make me think of you.
 Hopefully it adds a centimeter or two to your hand demonstration of how much you miss me. 🤏🏾`;
 
     const noteElement = document.getElementById("note");
+    const continueBtn = document.getElementById("continueBtn");
+    let typed = false;
+
+    function showScreen(id) {
+      document.querySelectorAll(".screen").forEach(screen => {
+        screen.classList.remove("active");
+      });
+
+      document.getElementById(id).classList.add("active");
+
+      if (id === "screen2" && !typed) {
+        typed = true;
+        setTimeout(typeWriter, 500);
+      }
+    }
+
     let index = 0;
 
     function typeWriter() {
       if (index < noteText.length) {
         noteElement.textContent += noteText[index];
         index++;
-        setTimeout(typeWriter, 26);
+        setTimeout(typeWriter, 24);
       } else {
         noteElement.classList.add("done");
+        continueBtn.classList.add("show");
       }
     }
-
-    setTimeout(typeWriter, 900);
   </script>
+
 </body>
 </html>
