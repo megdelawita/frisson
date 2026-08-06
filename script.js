@@ -33,6 +33,28 @@ Hopefully it adds a centimeter or two to your hand demonstration of how much you
       typed = true;
       window.setTimeout(startTypewriter, reduceMotion ? 0 : 500);
     }
+
+    if (id === "screen-playlist") {
+      startVinyl();
+    }
+  }
+
+  const vinylRig = document.getElementById("vinylRig");
+  const vinyl = document.getElementById("vinyl");
+  let vinylTimer = null;
+
+  function startVinyl() {
+    if (!vinylRig || !vinyl) return;
+    if (vinylTimer) window.clearTimeout(vinylTimer);
+
+    vinylRig.classList.remove("playing");
+    vinyl.classList.remove("playing");
+
+    const dropDelay = reduceMotion ? 0 : 500;
+    const spinDelay = reduceMotion ? 0 : 900;
+
+    window.setTimeout(() => vinylRig.classList.add("playing"), dropDelay);
+    vinylTimer = window.setTimeout(() => vinyl.classList.add("playing"), dropDelay + spinDelay);
   }
 
   function startTypewriter() {
