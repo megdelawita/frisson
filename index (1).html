@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>frisson</title>
+  <meta name="description" content="fris·son — a sudden thrill, a shiver of feeling. A playlist." />
+  <meta name="theme-color" content="#07040a" />
+
+  <meta property="og:title" content="frisson" />
+  <meta property="og:description" content="a sudden thrill; a shiver of feeling." />
+  <meta property="og:type" content="website" />
+
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='46' fill='%2307040a' stroke='%23caa0ab' stroke-width='2'/%3E%3C/svg%3E" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,400&family=Inter:wght@300;400;500&family=IBM+Plex+Mono:wght@400;500&display=swap"
+    rel="stylesheet"
+  />
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ambient texture, sits behind everything -->
+  <div class="grain" aria-hidden="true"></div>
+  <div class="bloom" aria-hidden="true"></div>
+
+  <main>
+
+    <!-- SCREEN 1 — intro -->
+    <section class="screen active" id="screen-intro" aria-label="Introduction">
+      <div class="frame frame--intro">
+        <p class="eyebrow">[ freeh&nbsp;·&nbsp;sawn ]</p>
+        <h1 class="wordmark">
+          <span
+            class="wordmark-hit"
+            id="wordmarkHit"
+            role="button"
+            tabindex="0"
+            aria-label="frisson"
+          >frisson</span>
+        </h1>
+        <span class="firefly" id="firefly" aria-hidden="true"></span>
+        <span class="layers" id="layers" aria-hidden="true">
+          <span class="layer-ring"></span>
+          <span class="layer-ring"></span>
+          <span class="layer-ring"></span>
+        </span>
+        <p class="definition-line">
+          <em>noun.</em> a sudden, strong feeling of excitement or fear; a thrill.
+        </p>
+        <button class="soft-button" id="enterBtn" type="button">
+          enter
+        </button>
+      </div>
+    </section>
+
+    <!-- SCREEN 2 — the note -->
+    <section class="screen" id="screen-note" aria-label="A note">
+      <div class="frame frame--note">
+        <p class="eyebrow">before you press play</p>
+        <p class="note" id="note" aria-live="polite"></p>
+        <span class="sr-only" id="note-full">Knowing how good your music taste already is, there's a good chance you'll know most of these. I'll keep adding songs I think you'd enjoy, and songs that make me think of you. Hopefully it adds a centimeter or two to your hand demonstration of how much you miss me. 🤏🏾</span>
+        <button class="soft-button hidden-button" id="continueBtn" type="button">
+          continue
+        </button>
+        <p class="tap-hint" id="tapHint">tap anywhere to skip</p>
+      </div>
+    </section>
+
+    <!-- SCREEN 3 — playlist -->
+    <section class="screen" id="screen-playlist" aria-label="The playlist">
+      <div class="frame frame--wide">
+        <p class="eyebrow">a playlist, apparently</p>
+
+        <div class="vinyl-rig" id="vinylRig" aria-hidden="true">
+          <span class="tonearm">
+            <span class="tonearm-base"></span>
+            <span class="tonearm-arm"></span>
+          </span>
+          <div class="vinyl" id="vinyl">
+            <div class="vinyl-label">frisson</div>
+          </div>
+        </div>
+
+        <h2 class="wordmark wordmark--small">frisson</h2>
+        <p class="subtitle">noun &nbsp;·&nbsp; French</p>
+
+        <div class="text">
+          <p>A sudden thrill or emotional shiver.</p>
+          <p>
+            Most commonly associated with music, but sometimes caused by a voice,
+            a memory, a moment, a person, or a certain self-proclaimed
+            <span class="mamdada">Mamdada</span>.
+          </p>
+          <p>
+            From the French <em>frisson</em>, meaning &ldquo;a shiver&rdquo; or &ldquo;a chill.&rdquo;
+          </p>
+        </div>
+
+        <div class="player" id="playerWrap">
+          <div class="player-skeleton" id="playerSkeleton" aria-hidden="true">
+            <span class="skeleton-bar"></span>
+            <span class="skeleton-bar"></span>
+            <span class="skeleton-bar"></span>
+          </div>
+          <iframe
+            id="playlistFrame"
+            title="fris·son — Apple Music playlist"
+            allow="autoplay *; encrypted-media *; fullscreen *; clipboard-write"
+            sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-storage-access-by-user-activation allow-top-navigation-by-user-activation"
+            src="https://embed.music.apple.com/us/playlist/fris-son/pl.u-LdbqE13Fxm88Jv4?theme=dark"
+            loading="lazy"
+          ></iframe>
+        </div>
+
+        <a
+          class="soft-button"
+          href="https://music.apple.com/us/playlist/fris-son/pl.u-LdbqE13Fxm88Jv4"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          open in apple music
+        </a>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
