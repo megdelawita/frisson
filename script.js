@@ -26,6 +26,15 @@ Hopefully it adds a centimeter or two to your hand demonstration of how much you
   const progressDots = Array.from(document.querySelectorAll(".progress-dot"));
   let furthest = 0;
 
+  const introScreen = document.getElementById("screen-intro");
+
+  function revealIntro() {
+    if (!introScreen) return;
+    introScreen.classList.remove("revealed");
+    void introScreen.offsetWidth; // restart the entrance animation on every visit
+    introScreen.classList.add("revealed");
+  }
+
   function showScreen(id) {
     screens.forEach((screen) => screen.classList.remove("active"));
     const target = document.getElementById(id);
@@ -42,6 +51,10 @@ Hopefully it adds a centimeter or two to your hand demonstration of how much you
       dot.classList.toggle("reached", dotIdx <= furthest);
     });
 
+    if (id === "screen-intro") {
+      window.setTimeout(revealIntro, reduceMotion ? 0 : 80);
+    }
+
     if (id === "screen-note" && !typed) {
       typed = true;
       window.setTimeout(startTypewriter, reduceMotion ? 0 : 500);
@@ -51,6 +64,35 @@ Hopefully it adds a centimeter or two to your hand demonstration of how much you
       startVinyl();
     }
   }
+
+  // password gate — the very first screen
+  const passwordForm = document.getElementById("passwordForm");
+  const passwordInput = document.getElementById("passwordInput");
+  const passwordError = document.getElementById("passwordError");
+  const passwordFrame = document.querySelector(".frame--password");
+  const PASSWORD = "ciaraisalwaysright";
+
+  passwordForm?.addEventListener("submit", (event) => {
+    event.preventDefault();
+    const attempt = passwordInput.value.trim().toLowerCase().replace(/\s+/g, "");
+
+    if (attempt === PASSWORD) {
+      showScreen("screen-intro");
+      return;
+    }
+
+    if (passwordError) {
+      passwordError.textContent = "try again";
+      passwordError.classList.add("show");
+    }
+    if (passwordFrame) {
+      passwordFrame.classList.remove("shake");
+      void passwordFrame.offsetWidth;
+      passwordFrame.classList.add("shake");
+    }
+    passwordInput.value = "";
+    passwordInput.focus();
+  });
 
   progressDots.forEach((dot) => {
     dot.addEventListener("click", () => {
@@ -185,6 +227,4 @@ Hopefully it adds a centimeter or two to your hand demonstration of how much you
       skeleton.classList.add("done");
     }, 4000);
   }
-
-  showScreen("screen-intro");
 })();

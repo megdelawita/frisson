@@ -103,6 +103,34 @@ body {
   box-shadow: inset 0 0 min(18vw, 170px) min(6vw, 50px) rgba(0, 0, 0, 0.55);
 }
 
+.sleeve-corner {
+  position: fixed;
+  right: -180px;
+  bottom: -180px;
+  width: 360px;
+  height: 360px;
+  border-radius: 50%;
+  border: 1px solid rgba(249, 236, 224, 0.06);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.sleeve-corner::before {
+  content: "";
+  position: absolute;
+  inset: 46px;
+  border-radius: 50%;
+  border: 1px solid rgba(249, 236, 224, 0.045);
+}
+
+.sleeve-corner::after {
+  content: "";
+  position: absolute;
+  inset: 92px;
+  border-radius: 50%;
+  border: 1px solid rgba(249, 236, 224, 0.03);
+}
+
 @keyframes flicker {
   0%   { transform: translate(calc(-51% + var(--tilt-x, 0px)), calc(-52% + var(--tilt-y, 0px))) scale(1);    opacity: 0.85; }
   22%  { transform: translate(calc(-49% + var(--tilt-x, 0px)), calc(-50% + var(--tilt-y, 0px))) scale(1.05); opacity: 1; }
@@ -278,6 +306,15 @@ main {
   100% { transform: rotate(360deg)  scale(1); }
 }
 
+.runout {
+  margin: 0 0 22px;
+  font-family: var(--mono);
+  font-size: 0.56rem;
+  letter-spacing: 0.16em;
+  color: var(--ink-faint);
+  opacity: 0.5;
+}
+
 .tonearm {
   position: absolute;
   top: -14px;
@@ -330,6 +367,102 @@ main {
 }
 
 /* ---------------------------------------------------------
+   password gate
+--------------------------------------------------------- */
+.mini-vinyl {
+  position: relative;
+  width: 56px;
+  height: 56px;
+  margin: 0 auto 26px;
+  border-radius: 50%;
+  background:
+    repeating-radial-gradient(
+      circle at 50% 50%,
+      #150a08 0px,
+      #150a08 2px,
+      #1e100c 3px,
+      #1e100c 4px
+    );
+  box-shadow:
+    0 8px 20px rgba(0, 0, 0, 0.5),
+    inset 0 0 0 1px rgba(249, 236, 224, 0.05);
+}
+
+.mini-vinyl::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, var(--gold), #8a5a2c 80%);
+}
+
+.frame--password {
+  max-width: 340px;
+}
+
+.frame--password form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.password-input {
+  width: 100%;
+  max-width: 240px;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--line);
+  text-align: center;
+  color: var(--ink);
+  font-family: var(--mono);
+  font-size: 1rem;
+  letter-spacing: 0.25em;
+  padding: 10px 4px;
+  outline: none;
+  transition: border-color 300ms ease;
+}
+
+.password-input::placeholder {
+  color: var(--ink-faint);
+  letter-spacing: 0.1em;
+}
+
+.password-input:focus {
+  border-color: var(--rose);
+}
+
+.password-error {
+  min-height: 18px;
+  margin-top: 16px;
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  color: var(--rose);
+  opacity: 0;
+  transition: opacity 300ms ease;
+}
+
+.password-error.show {
+  opacity: 0.9;
+}
+
+.frame--password.shake {
+  animation: shake 420ms ease;
+}
+
+@keyframes shake {
+  10%, 90% { transform: translateX(-1px); }
+  20%, 80% { transform: translateX(2px); }
+  30%, 50%, 70% { transform: translateX(-4px); }
+  40%, 60% { transform: translateX(4px); }
+}
+
+/* ---------------------------------------------------------
    opening choreography — intro elements arrive in sequence
 --------------------------------------------------------- */
 @keyframes fade-up {
@@ -337,22 +470,22 @@ main {
   to   { opacity: 1; transform: translateY(0); }
 }
 
-#screen-intro .eyebrow {
+#screen-intro.revealed .eyebrow {
   animation: fade-up 900ms var(--ease-expensive) both;
   animation-delay: 150ms;
 }
 
-#screen-intro .wordmark {
+#screen-intro.revealed .wordmark {
   animation: fade-up 1000ms var(--ease-expensive) both;
   animation-delay: 320ms;
 }
 
-#screen-intro .definition-line {
+#screen-intro.revealed .definition-line {
   animation: fade-up 900ms var(--ease-expensive) both;
   animation-delay: 560ms;
 }
 
-#screen-intro #enterBtn {
+#screen-intro.revealed #enterBtn {
   animation: fade-up 800ms var(--ease-expensive) both;
   animation-delay: 780ms;
 }
@@ -646,10 +779,8 @@ a:hover {
   position: absolute;
   inset: 0;
   display: flex;
-  flex-direction: column;
+  align-items: center;
   justify-content: center;
-  gap: 14px;
-  padding: 28px;
   z-index: 0;
 }
 
@@ -657,25 +788,22 @@ a:hover {
   display: none;
 }
 
-.skeleton-bar {
-  height: 12px;
-  border-radius: 6px;
-  background: linear-gradient(
-    90deg,
-    rgba(255, 255, 255, 0.03) 0%,
-    rgba(255, 255, 255, 0.08) 50%,
-    rgba(255, 255, 255, 0.03) 100%
-  );
-  background-size: 200% 100%;
-  animation: shimmer 1.6s ease-in-out infinite;
+.skeleton-ring {
+  position: absolute;
+  width: 34px;
+  height: 34px;
+  border: 1px solid var(--gold);
+  border-radius: 50%;
+  opacity: 0;
+  animation: layer-pulse 1700ms ease-out infinite;
 }
 
-.skeleton-bar:nth-child(2) { width: 70%; }
-.skeleton-bar:nth-child(3) { width: 45%; }
+.skeleton-ring:nth-child(2) {
+  animation-delay: 450ms;
+}
 
-@keyframes shimmer {
-  0% { background-position: 200% 0; }
-  100% { background-position: -200% 0; }
+.skeleton-ring:nth-child(3) {
+  animation-delay: 900ms;
 }
 
 /* ---------------------------------------------------------

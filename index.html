@@ -27,12 +27,35 @@
   <!-- ambient texture, sits behind everything -->
   <div class="grain" aria-hidden="true"></div>
   <div class="bloom" aria-hidden="true"></div>
+  <div class="sleeve-corner" aria-hidden="true"></div>
   <div class="vignette" aria-hidden="true"></div>
 
   <main>
 
+    <!-- SCREEN 0 — password gate -->
+    <section class="screen active" id="screen-password" aria-label="Enter password">
+      <div class="frame frame--password">
+        <div class="mini-vinyl" aria-hidden="true"></div>
+        <p class="eyebrow">this one's private</p>
+        <form id="passwordForm" novalidate>
+          <label class="sr-only" for="passwordInput">Password</label>
+          <input
+            type="password"
+            id="passwordInput"
+            class="password-input"
+            autocomplete="off"
+            spellcheck="false"
+            placeholder="password"
+            autofocus
+          />
+          <button class="soft-button" type="submit">drop the needle</button>
+        </form>
+        <p class="password-error" id="passwordError" role="alert" aria-live="polite"></p>
+      </div>
+    </section>
+
     <!-- SCREEN 1 — intro -->
-    <section class="screen active" id="screen-intro" aria-label="Introduction">
+    <section class="screen" id="screen-intro" aria-label="Introduction">
       <div class="frame frame--intro">
         <p class="eyebrow">[ freeh&nbsp;·&nbsp;sawn ]</p>
         <h1 class="wordmark">
@@ -86,6 +109,7 @@
             <div class="vinyl-label">frisson</div>
           </div>
         </div>
+        <p class="runout" aria-hidden="true">·&nbsp;pl.u-LdbqE13Fxm88Jv4&nbsp;·</p>
 
         <h2 class="wordmark wordmark--small">frisson</h2>
         <p class="subtitle">noun &nbsp;·&nbsp; French</p>
@@ -104,9 +128,9 @@
 
         <div class="player" id="playerWrap">
           <div class="player-skeleton" id="playerSkeleton" aria-hidden="true">
-            <span class="skeleton-bar"></span>
-            <span class="skeleton-bar"></span>
-            <span class="skeleton-bar"></span>
+            <span class="skeleton-ring"></span>
+            <span class="skeleton-ring"></span>
+            <span class="skeleton-ring"></span>
           </div>
           <iframe
             id="playlistFrame"
