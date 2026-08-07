@@ -95,12 +95,20 @@ body {
   will-change: transform, opacity;
 }
 
+.vignette {
+  position: fixed;
+  inset: 0;
+  z-index: 4;
+  pointer-events: none;
+  box-shadow: inset 0 0 min(18vw, 170px) min(6vw, 50px) rgba(0, 0, 0, 0.55);
+}
+
 @keyframes flicker {
-  0%   { transform: translate(-51%, -52%) scale(1);    opacity: 0.85; }
-  22%  { transform: translate(-49%, -50%) scale(1.05); opacity: 1; }
-  45%  { transform: translate(-52%, -49%) scale(0.97); opacity: 0.78; }
-  68%  { transform: translate(-50%, -53%) scale(1.03); opacity: 0.95; }
-  100% { transform: translate(-51%, -51%) scale(1);    opacity: 0.85; }
+  0%   { transform: translate(calc(-51% + var(--tilt-x, 0px)), calc(-52% + var(--tilt-y, 0px))) scale(1);    opacity: 0.85; }
+  22%  { transform: translate(calc(-49% + var(--tilt-x, 0px)), calc(-50% + var(--tilt-y, 0px))) scale(1.05); opacity: 1; }
+  45%  { transform: translate(calc(-52% + var(--tilt-x, 0px)), calc(-49% + var(--tilt-y, 0px))) scale(0.97); opacity: 0.78; }
+  68%  { transform: translate(calc(-50% + var(--tilt-x, 0px)), calc(-53% + var(--tilt-y, 0px))) scale(1.03); opacity: 0.95; }
+  100% { transform: translate(calc(-51% + var(--tilt-x, 0px)), calc(-51% + var(--tilt-y, 0px))) scale(1);    opacity: 0.85; }
 }
 
 /* ---------------------------------------------------------
@@ -139,6 +147,52 @@ main {
 }
 
 /* ---------------------------------------------------------
+   quiet section indicator + back-navigation
+--------------------------------------------------------- */
+.progress {
+  position: fixed;
+  left: max(20px, env(safe-area-inset-left));
+  bottom: max(20px, env(safe-area-inset-bottom));
+  z-index: 6;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.progress-dot {
+  font-family: var(--mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.05em;
+  color: var(--ink-faint);
+  padding: 4px;
+  opacity: 0.4;
+  transform: none;
+  transition: opacity 400ms ease, color 400ms ease;
+}
+
+.progress-dot:hover {
+  transform: none;
+}
+
+.progress-dot.reached {
+  opacity: 0.65;
+  cursor: pointer;
+}
+
+.progress-dot.reached:hover {
+  opacity: 1;
+}
+
+.progress-dot.current {
+  opacity: 1;
+  color: var(--rose);
+}
+
+.progress-dot:not(.reached) {
+  pointer-events: none;
+}
+
+/* ---------------------------------------------------------
    vinyl — the playlist screen's signature element
 --------------------------------------------------------- */
 .vinyl-rig {
@@ -162,7 +216,8 @@ main {
       #1e100c 4px
     );
   box-shadow:
-    0 14px 34px rgba(0, 0, 0, 0.55),
+    0 16px 40px rgba(0, 0, 0, 0.6),
+    0 4px 10px rgba(0, 0, 0, 0.4),
     inset 0 0 0 1px rgba(249, 236, 224, 0.05);
   animation: spin 6.5s linear infinite;
   animation-play-state: paused;
@@ -216,7 +271,11 @@ main {
 }
 
 @keyframes spin {
-  to { transform: rotate(360deg); }
+  0%   { transform: rotate(0deg)    scale(1); }
+  25%  { transform: rotate(90deg)   scale(1.004); }
+  50%  { transform: rotate(180deg)  scale(1); }
+  75%  { transform: rotate(270deg)  scale(0.996); }
+  100% { transform: rotate(360deg)  scale(1); }
 }
 
 .tonearm {
@@ -248,7 +307,7 @@ main {
   background: var(--ink-dim);
   transform-origin: 100% 50%;
   transform: rotate(-34deg);
-  transition: transform 1100ms var(--ease-expensive);
+  transition: transform 1000ms cubic-bezier(0.34, 1.4, 0.44, 1);
 }
 
 .tonearm-arm::before {
@@ -268,6 +327,34 @@ main {
 
 .frame--wide {
   max-width: 640px;
+}
+
+/* ---------------------------------------------------------
+   opening choreography — intro elements arrive in sequence
+--------------------------------------------------------- */
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+#screen-intro .eyebrow {
+  animation: fade-up 900ms var(--ease-expensive) both;
+  animation-delay: 150ms;
+}
+
+#screen-intro .wordmark {
+  animation: fade-up 1000ms var(--ease-expensive) both;
+  animation-delay: 320ms;
+}
+
+#screen-intro .definition-line {
+  animation: fade-up 900ms var(--ease-expensive) both;
+  animation-delay: 560ms;
+}
+
+#screen-intro #enterBtn {
+  animation: fade-up 800ms var(--ease-expensive) both;
+  animation-delay: 780ms;
 }
 
 .frame--intro {

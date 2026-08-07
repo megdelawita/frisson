@@ -22,12 +22,25 @@ Hopefully it adds a centimeter or two to your hand demonstration of how much you
   let typeIndex = 0;
   let typeTimer = null;
 
+  const screenOrder = ["screen-intro", "screen-note", "screen-playlist"];
+  const progressDots = Array.from(document.querySelectorAll(".progress-dot"));
+  let furthest = 0;
+
   function showScreen(id) {
     screens.forEach((screen) => screen.classList.remove("active"));
     const target = document.getElementById(id);
     if (!target) return;
     target.classList.add("active");
     target.focus?.({ preventScroll: true });
+
+    const idx = screenOrder.indexOf(id);
+    if (idx > furthest) furthest = idx;
+
+    progressDots.forEach((dot) => {
+      const dotIdx = screenOrder.indexOf(dot.dataset.target);
+      dot.classList.toggle("current", dot.dataset.target === id);
+      dot.classList.toggle("reached", dotIdx <= furthest);
+    });
 
     if (id === "screen-note" && !typed) {
       typed = true;
@@ -37,6 +50,22 @@ Hopefully it adds a centimeter or two to your hand demonstration of how much you
     if (id === "screen-playlist") {
       startVinyl();
     }
+  }
+
+  progressDots.forEach((dot) => {
+    dot.addEventListener("click", () => {
+      if (dot.classList.contains("reached")) showScreen(dot.dataset.target);
+    });
+  });
+
+  // subtle pointer-parallax on the ambient glow — desktop/fine-pointer only
+  if (!reduceMotion && window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
+    window.addEventListener("pointermove", (event) => {
+      const x = (event.clientX / window.innerWidth - 0.5) * 18;
+      const y = (event.clientY / window.innerHeight - 0.5) * 18;
+      document.documentElement.style.setProperty("--tilt-x", `${x}px`);
+      document.documentElement.style.setProperty("--tilt-y", `${y}px`);
+    });
   }
 
   const vinylRig = document.getElementById("vinylRig");
