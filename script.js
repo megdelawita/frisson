@@ -70,13 +70,24 @@ Hopefully it adds a centimeter or two to your hand demonstration of how much you
   const passwordInput = document.getElementById("passwordInput");
   const passwordError = document.getElementById("passwordError");
   const passwordFrame = document.querySelector(".frame--password");
+  const passwordScreen = document.getElementById("screen-password");
   const PASSWORD = "ciaraisalwaysright";
+  const UNLOCK_KEY = "frisson-unlocked";
+
+  function rememberUnlock() {
+    try {
+      window.localStorage.setItem(UNLOCK_KEY, "1");
+    } catch (e) {
+      /* private browsing / storage blocked — the gate just asks again next time */
+    }
+  }
 
   passwordForm?.addEventListener("submit", (event) => {
     event.preventDefault();
     const attempt = passwordInput.value.trim().toLowerCase().replace(/\s+/g, "");
 
     if (attempt === PASSWORD) {
+      rememberUnlock();
       showScreen("screen-intro");
       return;
     }
@@ -93,6 +104,16 @@ Hopefully it adds a centimeter or two to your hand demonstration of how much you
     passwordInput.value = "";
     passwordInput.focus();
   });
+
+  // already unlocked this device before — skip straight past the gate
+  try {
+    if (window.localStorage.getItem(UNLOCK_KEY) === "1") {
+      passwordScreen?.classList.remove("active");
+      showScreen("screen-intro");
+    }
+  } catch (e) {
+    /* storage unavailable — the gate just shows normally */
+  }
 
   progressDots.forEach((dot) => {
     dot.addEventListener("click", () => {
@@ -163,8 +184,78 @@ Hopefully it adds a centimeter or two to your hand demonstration of how much you
     if (typed && typing) finishTypewriter();
   });
 
+  // a quiet, synthesized vinyl crackle — no audio file, generated in-browser
+  const soundToggle = document.getElementById("soundToggle");
+  const CRACKLE_TARGET = 0.035;
+  let audioCtx = null;
+  let crackleGain = null;
+  let crackleMuted = false;
+
+  function startCrackle() {
+    if (audioCtx) {
+      if (audioCtx.state === "suspended") audioCtx.resume();
+      return;
+    }
+    try {
+      const AudioCtx = window.AudioContext || window.webkitAudioContext;
+      if (!AudioCtx) return;
+      audioCtx = new AudioCtx();
+
+      const duration = 4;
+      const rate = audioCtx.sampleRate;
+      const buffer = audioCtx.createBuffer(1, rate * duration, rate);
+      const data = buffer.getChannelData(0);
+      for (let i = 0; i < data.length; i++) {
+        let sample = (Math.random() * 2 - 1) * 0.12;
+        if (Math.random() < 0.0006) sample += (Math.random() * 2 - 1) * 0.8;
+        data[i] = sample;
+      }
+
+      const source = audioCtx.createBufferSource();
+      source.buffer = buffer;
+      source.loop = true;
+
+      const filter = audioCtx.createBiquadFilter();
+      filter.type = "lowpass";
+      filter.frequency.value = 3200;
+
+      crackleGain = audioCtx.createGain();
+      crackleGain.gain.value = 0;
+
+      source.connect(filter).connect(crackleGain).connect(audioCtx.destination);
+      source.start(0);
+
+      crackleGain.gain.linearRampToValueAtTime(
+        crackleMuted ? 0 : CRACKLE_TARGET,
+        audioCtx.currentTime + 1.6
+      );
+
+      document.body.classList.add("audio-ready");
+    } catch (e) {
+      /* Web Audio unavailable — the site works fine without the crackle */
+    }
+  }
+
+  function toggleCrackle() {
+    crackleMuted = !crackleMuted;
+    if (audioCtx && crackleGain) {
+      const now = audioCtx.currentTime;
+      crackleGain.gain.cancelScheduledValues(now);
+      crackleGain.gain.linearRampToValueAtTime(crackleMuted ? 0 : CRACKLE_TARGET, now + 0.4);
+    }
+    if (soundToggle) {
+      soundToggle.textContent = crackleMuted ? "sound: off" : "sound: on";
+      soundToggle.setAttribute("aria-pressed", String(!crackleMuted));
+    }
+  }
+
+  soundToggle?.addEventListener("click", toggleCrackle);
+
   enterBtn.addEventListener("click", () => showScreen("screen-note"));
-  continueBtn.addEventListener("click", () => showScreen("screen-playlist"));
+  continueBtn.addEventListener("click", () => {
+    startCrackle();
+    showScreen("screen-playlist");
+  });
 
   // hidden easter egg — hold the wordmark for a moment
   const wordmarkHit = document.getElementById("wordmarkHit");

@@ -145,6 +145,7 @@ body {
 main {
   position: relative;
   z-index: 1;
+  perspective: 1400px;
 }
 
 .screen {
@@ -167,6 +168,16 @@ main {
   opacity: 1;
   transform: translateY(0) scale(1);
   pointer-events: auto;
+}
+
+/* the playlist screen turns in like flipping a record, rather than just drifting up */
+#screen-playlist {
+  transform: translateY(14px) scale(0.985) rotateY(-22deg);
+  backface-visibility: hidden;
+}
+
+#screen-playlist.active {
+  transform: translateY(0) scale(1) rotateY(0deg);
 }
 
 .frame {
@@ -218,6 +229,30 @@ main {
 
 .progress-dot:not(.reached) {
   pointer-events: none;
+}
+
+.sound-toggle {
+  position: fixed;
+  right: max(20px, env(safe-area-inset-right));
+  bottom: max(20px, env(safe-area-inset-bottom));
+  z-index: 6;
+  font-family: var(--mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.1em;
+  color: var(--ink-faint);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 500ms ease;
+}
+
+body.audio-ready .sound-toggle {
+  opacity: 0.5;
+  pointer-events: auto;
+}
+
+body.audio-ready .sound-toggle:hover {
+  opacity: 0.9;
+  transform: none;
 }
 
 /* ---------------------------------------------------------
